@@ -1,0 +1,248 @@
+id: data-analysis-pipeline
+name: Data Analysis Pipeline
+description: Analyze data, generate insights, and create visualizations
+version: "1.0.0"
+
+variables:
+  dataset: ""
+  analysisType: "exploratory"
+  businessContext: ""
+
+nodes:
+  - id: data-understanding
+    name: Data Understanding
+    description: Understand the dataset structure and characteristics
+    model:
+      provider: openai
+      model: gpt-4-turbo-preview
+      temperature: 0.2
+      maxTokens: 1000
+    systemPrompt: |
+      You are a data scientist. Analyze dataset structure and provide insights about the data.
+    userPrompt: |
+      Analyze this dataset:
+      
+      {{dataset}}
+      
+      Provide:
+      1. Data type identification (tabular, time-series, text, etc.)
+      2. Columns/fields and their likely meanings
+      3. Data types for each field
+      4. Potential data quality issues
+      5. Initial observations about patterns or anomalies
+      
+      Business context: {{businessContext}}
+    variables:
+      - dataset
+      - businessContext
+    cacheConfig:
+      enabled: true
+      ttl: 1800
+
+  - id: statistical-analysis
+    name: Statistical Analysis
+    description: Perform statistical analysis
+    model:
+      provider: anthropic
+      model: claude-3-sonnet-20240229
+      temperature: 0.2
+      maxTokens: 1200
+    systemPrompt: |
+      You are a statistician. Provide rigorous statistical analysis.
+    userPrompt: |
+      Perform statistical analysis on this dataset:
+      
+      {{dataset}}
+      
+      Based on the data type, provide:
+      1. Descriptive statistics (mean, median, std dev, etc.)
+      2. Distribution analysis
+      3. Correlation analysis (if applicable)
+      4. Outlier detection
+      5. Statistical significance of observed patterns
+      
+      Include Python code snippets for verification.
+    variables:
+      - dataset
+    retryConfig:
+      maxAttempts: 2
+      minTimeout: 2000
+      factor: 2
+
+  - id: insight-generation
+    name: Insight Generation
+    description: Generate actionable insights
+    model:
+      provider: openai
+      model: gpt-4-turbo-preview
+      temperature: 0.4
+      maxTokens: 1000
+    systemPrompt: |
+      You are a business intelligence expert. Translate data findings into actionable insights.
+    userPrompt: |
+      Generate insights from this analysis:
+      
+      Data Understanding:
+      {{data-understanding}}
+      
+      Statistical Analysis:
+      {{statistical-analysis}}
+      
+      Business Context: {{businessContext}}
+      
+      Provide:
+      1. Key findings (3-5 most important)
+      2. Trends and patterns
+      3. Surprising or counterintuitive results
+      4. Actionable recommendations
+      5. Questions for further investigation
+      
+      Format for business stakeholders.
+    variables:
+      - data-understanding
+      - statistical-analysis
+      - businessContext
+
+  - id: visualization-code
+    name: Visualization Code Generation
+    description: Generate Python visualization code
+    model:
+      provider: anthropic
+      model: claude-3-sonnet-20240229
+      temperature: 0.3
+      maxTokens: 1500
+    systemPrompt: |
+      You are a data visualization expert. Create clear, informative visualizations.
+    userPrompt: |
+      Generate Python code to visualize this dataset:
+      
+      Dataset:
+      {{dataset}}
+      
+      Key insights to visualize:
+      {{insight-generation}}
+      
+      Create matplotlib/seaborn code for:
+      1. Distribution plots for key variables
+      2. Correlation heatmap (if applicable)
+      3. Time series plot (if time-based)
+      4. Any other relevant charts
+      
+      Include proper labels, titles, and styling.
+      Code should be ready to run.
+    variables:
+      - dataset
+      - insight-generation
+
+  - id: executive-summary
+    name: Executive Summary
+    description: Create executive summary of findings
+    model:
+      provider: openai
+      model: gpt-4-turbo-preview
+      temperature: 0.3
+      maxTokens: 600
+    systemPrompt: |
+      You are a management consultant. Create concise executive summaries.
+    userPrompt: |
+      Create an executive summary of this data analysis:
+      
+      {{insight-generation}}
+      
+      Business Context: {{businessContext}}
+      
+      Structure:
+      1. Bottom Line Up Front (BLUF) - one sentence
+      2. Key Findings (bullet points)
+      3. Business Implications
+      4. Recommended Actions
+      5. Next Steps
+      
+      Keep it under 300 words. Use business language.
+    variables:
+      - insight-generation
+      - businessContext
+
+  - id: report
+    name: Full Report
+    description: Compile complete analysis report
+    model:
+      provider: anthropic
+      model: claude-3-sonnet-20240229
+      temperature: 0.3
+      maxTokens: 2000
+    systemPrompt: |
+      You are a technical writer. Compile comprehensive analysis reports.
+    userPrompt: |
+      Compile a complete data analysis report:
+      
+      Executive Summary:
+      {{executive-summary}}
+      
+      Data Understanding:
+      {{data-understanding}}
+      
+      Statistical Analysis:
+      {{statistical-analysis}}
+      
+      Insights:
+      {{insight-generation}}
+      
+      Visualization Code:
+      {{visualization-code}}
+      
+      Format as a professional report with:
+      - Title and sections
+      - Clear headings
+      - Code blocks
+      - Interpretation of results
+      - Limitations and caveats
+      - Appendix with methodology
+    variables:
+      - executive-summary
+      - data-understanding
+      - statistical-analysis
+      - insight-generation
+      - visualization-code
+
+edges:
+  - id: e1
+    source: data-understanding
+    target: statistical-analysis
+  - id: e2
+    source: data-understanding
+    target: insight-generation
+  - id: e3
+    source: statistical-analysis
+    target: insight-generation
+  - id: e4
+    source: insight-generation
+    target: visualization-code
+  - id: e5
+    source: insight-generation
+    target: executive-summary
+  - id: e6
+    source: executive-summary
+    target: report
+  - id: e7
+    source: data-understanding
+    target: report
+  - id: e8
+    source: statistical-analysis
+    target: report
+  - id: e9
+    source: insight-generation
+    target: report
+  - id: e10
+    source: visualization-code
+    target: report
+
+metadata:
+  createdAt: "2024-03-27"
+  author: PromptFlow Team
+  tags:
+    - data-analysis
+    - pipeline
+    - visualization
+    - business-intelligence
+    - expert

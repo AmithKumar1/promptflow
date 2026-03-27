@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-md p-4 border border-gray-200;
+  }
+}
+
+/* React Flow custom styles */
+.react-flow__node {
+  @apply rounded-lg shadow-md;
+}
+
+.react-flow__node.selected {
+  @apply ring-2 ring-blue-500;
+}
+
+.react-flow__edge-path {
+  @apply stroke-gray-400 stroke-2;
+}
+
+.react-flow__controls {
+  @apply shadow-lg rounded-lg;
+}

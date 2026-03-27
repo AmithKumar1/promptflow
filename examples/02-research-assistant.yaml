@@ -1,0 +1,154 @@
+id: multi-step-research
+name: Multi-Step Research Assistant
+description: Research a topic, create outline, and write comprehensive article
+version: "1.0.0"
+
+variables:
+  topic: "Quantum Computing"
+  targetAudience: "technical professionals"
+  articleType: "explainer"
+
+nodes:
+  - id: research
+    name: Research Topic
+    description: Gather comprehensive information about the topic
+    model:
+      provider: openai
+      model: gpt-4-turbo-preview
+      temperature: 0.5
+      maxTokens: 1500
+    systemPrompt: |
+      You are an expert research assistant. Provide accurate, well-structured information
+      with proper context and current developments.
+    userPrompt: |
+      Research the following topic thoroughly: {{topic}}
+      
+      Provide:
+      1. Definition and core concepts
+      2. Current state of the field (as of 2024)
+      3. Key challenges and limitations
+      4. Major players and developments
+      5. Future outlook and potential applications
+      
+      Target audience: {{targetAudience}}
+    variables:
+      - topic
+      - targetAudience
+    cacheConfig:
+      enabled: true
+      ttl: 7200
+    retryConfig:
+      maxAttempts: 3
+      minTimeout: 2000
+      maxTimeout: 10000
+      factor: 2
+
+  - id: outline
+    name: Create Outline
+    description: Structure the research into a coherent outline
+    model:
+      provider: anthropic
+      model: claude-3-sonnet-20240229
+      temperature: 0.4
+      maxTokens: 800
+    systemPrompt: |
+      You are a skilled content strategist. Create well-organized, logical outlines
+      that flow naturally and cover all important points.
+    userPrompt: |
+      Based on this research:
+      
+      {{research}}
+      
+      Create a detailed outline for a {{articleType}} article targeting {{targetAudience}}.
+      
+      The outline should:
+      - Have a compelling introduction
+      - Organize content into logical sections with subsections
+      - Include a strong conclusion with key takeaways
+      - Suggest where examples or diagrams would be helpful
+      
+      Format as a hierarchical outline (I, A, 1, a, etc.)
+    variables:
+      - research
+      - articleType
+      - targetAudience
+    retryConfig:
+      maxAttempts: 2
+      minTimeout: 1000
+      maxTimeout: 5000
+      factor: 2
+
+  - id: draft
+    name: Write First Draft
+    description: Expand the outline into full content
+    model:
+      provider: openai
+      model: gpt-4-turbo-preview
+      temperature: 0.7
+      maxTokens: 2000
+    systemPrompt: |
+      You are an experienced writer. Transform outlines into engaging, well-written content
+      that is both informative and readable.
+    userPrompt: |
+      Using this outline:
+      
+      {{outline}}
+      
+      Write a complete {{articleType}} article about {{topic}}.
+      
+      Writing guidelines:
+      - Use clear, professional language appropriate for {{targetAudience}}
+      - Include smooth transitions between sections
+      - Add relevant examples to illustrate complex points
+      - Maintain consistent tone throughout
+      - Aim for comprehensive coverage without unnecessary verbosity
+
+  - id: review
+    name: Review and Refine
+    description: Review the draft for quality and accuracy
+    model:
+      provider: anthropic
+      model: claude-3-sonnet-20240229
+      temperature: 0.3
+      maxTokens: 1000
+    systemPrompt: |
+      You are a meticulous editor. Review content for accuracy, clarity, and quality.
+    userPrompt: |
+      Review this article draft:
+      
+      {{draft}}
+      
+      Provide:
+      1. Overall assessment (strengths and weaknesses)
+      2. Factual accuracy check - flag any questionable claims
+      3. Suggestions for improvement
+      4. A revised version addressing the issues
+      
+      Be constructive but thorough.
+    variables:
+      - draft
+    retryConfig:
+      maxAttempts: 2
+      minTimeout: 1000
+      factor: 2
+
+edges:
+  - id: e1
+    source: research
+    target: outline
+  - id: e2
+    source: outline
+    target: draft
+  - id: e3
+    source: draft
+    target: review
+
+metadata:
+  createdAt: "2024-03-27"
+  author: PromptFlow Team
+  tags:
+    - research
+    - content
+    - multi-step
+    - article
+    - intermediate

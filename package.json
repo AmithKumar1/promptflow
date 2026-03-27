@@ -1,0 +1,55 @@
+{
+  "name": "promptflow-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Visual prompt engineering and workflow orchestrator for LLMs",
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "dev:ui": "pnpm --filter @promptflow/ui dev",
+    "dev:cli": "pnpm --filter @promptflow/cli dev",
+    "build": "pnpm -r build",
+    "build:core": "pnpm --filter @promptflow/core build",
+    "build:cli": "pnpm --filter @promptflow/cli build",
+    "build:ui": "pnpm --filter @promptflow/ui build",
+    "test": "pnpm -r test",
+    "test:coverage": "pnpm -r test:coverage",
+    "test:core": "pnpm --filter @promptflow/core test",
+    "lint": "eslint packages/*/src/**/*.{ts,tsx}",
+    "lint:fix": "eslint packages/*/src/**/*.{ts,tsx} --fix",
+    "typecheck": "pnpm -r typecheck",
+    "clean": "pnpm -r clean && rm -rf node_modules",
+    "publish:all": "pnpm -r publish --access public",
+    "cli": "pnpm --filter @promptflow/cli build && node packages/cli/dist/bin.js"
+  },
+  "keywords": [
+    "prompt-engineering",
+    "llm",
+    "workflow",
+    "openai",
+    "anthropic",
+    "ai",
+    "orchestrator",
+    "automation"
+  ],
+  "author": "PromptFlow Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.0",
+    "prettier": "^3.2.5",
+    "prettier-plugin-organize-imports": "^3.2.4"
+  },
+  "prettier": {
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "none",
+    "printWidth": 100
+  }
+}

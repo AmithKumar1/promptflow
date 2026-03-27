@@ -1,0 +1,47 @@
+id: basic-content-generation
+name: Basic Content Generation
+description: Simple single-node workflow for generating content
+version: "1.0.0"
+
+variables:
+  topic: "artificial intelligence"
+  tone: "informative"
+  length: "brief"
+
+nodes:
+  - id: generate
+    name: Generate Content
+    description: Generate content about a topic
+    model:
+      provider: openai
+      model: gpt-4-turbo-preview
+      temperature: 0.7
+      maxTokens: 500
+    systemPrompt: |
+      You are a helpful content creator. Write clear, accurate, and engaging content.
+      Adapt your tone and style based on the requested parameters.
+    userPrompt: |
+      Write a {{length}} explanation about {{topic}}.
+      
+      Guidelines:
+      - Use an {{tone}} tone
+      - Include key concepts and practical examples
+      - Keep it accessible to a general audience
+      - Highlight why this topic matters
+    variables:
+      - topic
+      - tone
+      - length
+    cacheConfig:
+      enabled: true
+      ttl: 3600
+
+edges: []
+
+metadata:
+  createdAt: "2024-03-27"
+  author: PromptFlow Team
+  tags:
+    - content
+    - beginner
+    - single-node

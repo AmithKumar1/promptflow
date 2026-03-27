@@ -1,0 +1,218 @@
+id: code-review-agent
+name: Code Review Agent
+description: Automated code review with multiple analysis passes
+version: "1.0.0"
+
+variables:
+  code: ""
+  language: "typescript"
+  reviewFocus: "security, performance, best practices"
+
+nodes:
+  - id: syntax-check
+    name: Syntax & Structure Analysis
+    description: Analyze code syntax and structure
+    model:
+      provider: openai
+      model: gpt-4-turbo-preview
+      temperature: 0.2
+      maxTokens: 1000
+    systemPrompt: |
+      You are a senior software engineer. Analyze code for syntax, structure, and readability.
+      Be specific and actionable in your feedback.
+    userPrompt: |
+      Analyze this {{language}} code for syntax and structural issues:
+      
+      ```{{language}}
+      {{code}}
+      ```
+      
+      Check for:
+      - Syntax errors or potential runtime issues
+      - Code style and formatting
+      - Naming conventions
+      - Function and class structure
+      - Comments and documentation
+      
+      Provide specific line references where applicable.
+    variables:
+      - code
+      - language
+    cacheConfig:
+      enabled: true
+      ttl: 1800
+
+  - id: security-review
+    name: Security Analysis
+    description: Identify security vulnerabilities
+    model:
+      provider: anthropic
+      model: claude-3-sonnet-20240229
+      temperature: 0.2
+      maxTokens: 1000
+    systemPrompt: |
+      You are a security expert specializing in application security.
+      Identify potential vulnerabilities and suggest secure alternatives.
+    userPrompt: |
+      Review this {{language}} code for security vulnerabilities:
+      
+      ```{{language}}
+      {{code}}
+      ```
+      
+      Check for:
+      - Input validation issues
+      - Injection vulnerabilities (SQL, XSS, command)
+      - Authentication/authorization flaws
+      - Sensitive data handling
+      - Insecure dependencies or patterns
+      - OWASP Top 10 concerns
+      
+      For each issue:
+      1. Describe the vulnerability
+      2. Explain the risk
+      3. Provide a fixed code example
+    variables:
+      - code
+      - language
+    cacheConfig:
+      enabled: true
+      ttl: 1800
+
+  - id: performance-review
+    name: Performance Analysis
+    description: Identify performance issues
+    model:
+      provider: openai
+      model: gpt-4-turbo-preview
+      temperature: 0.3
+      maxTokens: 1000
+    systemPrompt: |
+      You are a performance optimization expert.
+      Identify bottlenecks and suggest optimizations.
+    userPrompt: |
+      Analyze this {{language}} code for performance issues:
+      
+      ```{{language}}
+      {{code}}
+      ```
+      
+      Check for:
+      - Time complexity issues (nested loops, inefficient algorithms)
+      - Memory leaks or excessive allocations
+      - Unnecessary re-renders or computations
+      - Database query inefficiencies
+      - Missing caching opportunities
+      - Async/await patterns
+      
+      For each issue:
+      1. Describe the problem
+      2. Explain the performance impact
+      3. Provide an optimized alternative
+    variables:
+      - code
+      - language
+
+  - id: best-practices
+    name: Best Practices Review
+    description: Check adherence to language best practices
+    model:
+      provider: anthropic
+      model: claude-3-sonnet-20240229
+      temperature: 0.3
+      maxTokens: 1000
+    systemPrompt: |
+      You are a principal engineer with deep expertise in {{language}}.
+      Ensure code follows modern best practices and patterns.
+    userPrompt: |
+      Review this code against {{language}} best practices:
+      
+      ```{{language}}
+      {{code}}
+      ```
+      
+      Check for:
+      - Design pattern appropriateness
+      - SOLID principles adherence
+      - Error handling completeness
+      - Type safety (if applicable)
+      - Testability
+      - Maintainability
+      
+      Provide specific refactoring suggestions with code examples.
+    variables:
+      - code
+      - language
+
+  - id: summary
+    name: Consolidated Review
+    description: Combine all reviews into a comprehensive report
+    model:
+      provider: openai
+      model: gpt-4-turbo-preview
+      temperature: 0.4
+      maxTokens: 1500
+    systemPrompt: |
+      You are a tech lead providing constructive code review feedback.
+      Be clear, actionable, and encouraging.
+    userPrompt: |
+      Synthesize these code review analyses into a comprehensive report:
+      
+      Syntax & Structure:
+      {{syntax-check}}
+      
+      Security:
+      {{security-review}}
+      
+      Performance:
+      {{performance-review}}
+      
+      Best Practices:
+      {{best-practices}}
+      
+      Create a report with:
+      1. Executive Summary (overall quality assessment)
+      2. Critical Issues (must fix before merge)
+      3. Important Improvements (should fix)
+      4. Nice-to-Have Suggestions (optional)
+      5. Positive Observations (what was done well)
+      
+      Format clearly with priority indicators.
+    variables:
+      - syntax-check
+      - security-review
+      - performance-review
+      - best-practices
+
+edges:
+  - id: e1
+    source: syntax-check
+    target: security-review
+  - id: e2
+    source: security-review
+    target: performance-review
+  - id: e3
+    source: performance-review
+    target: best-practices
+  - id: e4
+    source: syntax-check
+    target: summary
+  - id: e5
+    source: security-review
+    target: summary
+  - id: e6
+    source: performance-review
+    target: summary
+  - id: e7
+    source: best-practices
+    target: summary
+
+metadata:
+  createdAt: "2024-03-27"
+  author: PromptFlow Team
+  tags:
+    - code-review
+    - agent
+    - security
+    - performance
+    - advanced

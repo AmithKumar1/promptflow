@@ -1,0 +1,225 @@
+id: customer-support-classifier
+name: Customer Support Ticket Classifier
+description: Classify and route customer support tickets automatically
+version: "1.0.0"
+
+variables:
+  ticketContent: ""
+  productName: "PromptFlow"
+  supportedCategories: "technical, billing, feature-request, general"
+
+nodes:
+  - id: sentiment
+    name: Sentiment Analysis
+    description: Analyze customer sentiment
+    model:
+      provider: openai
+      model: gpt-4-turbo-preview
+      temperature: 0.1
+      maxTokens: 200
+    systemPrompt: |
+      You are a sentiment analysis expert. Accurately assess customer emotion and urgency.
+    userPrompt: |
+      Analyze the sentiment and urgency of this customer support ticket:
+      
+      "{{ticketContent}}"
+      
+      Provide:
+      1. Sentiment: positive, neutral, frustrated, angry
+      2. Urgency: low, medium, high, critical
+      3. Confidence score (0-100)
+      
+      Format as JSON only, no additional text.
+    variables:
+      - ticketContent
+    cacheConfig:
+      enabled: true
+      ttl: 300
+
+  - id: categorization
+    name: Ticket Categorization
+    description: Categorize the ticket type
+    model:
+      provider: anthropic
+      model: claude-3-sonnet-20240229
+      temperature: 0.2
+      maxTokens: 300
+    systemPrompt: |
+      You are a support operations expert. Accurately categorize tickets for routing.
+    userPrompt: |
+      Categorize this support ticket into one of these categories: {{supportedCategories}}
+      
+      Ticket:
+      "{{ticketContent}}"
+      
+      Product: {{productName}}
+      
+      Provide:
+      1. Primary category
+      2. Secondary category (if applicable)
+      3. Subcategory
+      4. Suggested team/individual to handle
+      5. Estimated resolution time
+      
+      Format as JSON only.
+    variables:
+      - ticketContent
+      - supportedCategories
+      - productName
+    cacheConfig:
+      enabled: true
+      ttl: 300
+
+  - id: intent
+    name: Intent Extraction
+    description: Extract the customer's specific request/intent
+    model:
+      provider: openai
+      model: gpt-4-turbo-preview
+      temperature: 0.2
+      maxTokens: 400
+    systemPrompt: |
+      You are an NLP expert in intent extraction. Identify exactly what the customer wants.
+    userPrompt: |
+      Extract the customer's intent from this ticket:
+      
+      "{{ticketContent}}"
+      
+      Provide:
+      1. Primary intent (one sentence)
+      2. Specific request/action needed
+      3. Any mentioned features, errors, or issues
+      4. Expected outcome from customer's perspective
+      5. Context that might be missing
+      
+      Format as JSON.
+    variables:
+      - ticketContent
+
+  - id: suggested-response
+    name: Draft Response
+    description: Generate a suggested response
+    model:
+      provider: anthropic
+      model: claude-3-sonnet-20240229
+      temperature: 0.5
+      maxTokens: 600
+    systemPrompt: |
+      You are a customer support specialist. Write empathetic, helpful responses.
+    userPrompt: |
+      Based on this analysis, draft a customer support response:
+      
+      Ticket: "{{ticketContent}}"
+      
+      Sentiment: {{sentiment}}
+      Category: {{categorization}}
+      Intent: {{intent}}
+      
+      Write a response that:
+      1. Acknowledges their concern with appropriate empathy
+      2. Confirms understanding of their issue
+      3. Provides initial guidance or next steps
+      4. Sets appropriate expectations
+      5. Includes relevant resources if applicable
+      
+      Match the tone to the customer's sentiment.
+    variables:
+      - ticketContent
+      - sentiment
+      - categorization
+      - intent
+
+  - id: routing
+    name: Routing Decision
+    description: Determine final routing and priority
+    model:
+      provider: openai
+      model: gpt-4-turbo-preview
+      temperature: 0.1
+      maxTokens: 300
+    systemPrompt: |
+      You are a support operations manager. Make routing decisions based on all available data.
+    userPrompt: |
+      Make the final routing decision for this ticket:
+      
+      Original: "{{ticketContent}}"
+      Sentiment: {{sentiment}}
+      Category: {{categorization}}
+      Intent: {{intent}}
+      
+      Provide:
+      1. Priority level (P1-Critical, P2-High, P3-Medium, P4-Low)
+      2. Assigned team
+      3. Assigned individual (if applicable)
+      4. SLA target (response time)
+      5. Escalation flag (yes/no with reason)
+      6. Tags for tracking
+      
+      Format as JSON.
+    variables:
+      - ticketContent
+      - sentiment
+      - categorization
+      - intent
+
+  - id: summary
+    name: Ticket Summary
+    description: Create a complete ticket summary
+    model:
+      provider: anthropic
+      model: claude-3-sonnet-20240229
+      temperature: 0.3
+      maxTokens: 500
+    systemPrompt: |
+      You are a support analyst. Create comprehensive ticket summaries.
+    userPrompt: |
+      Create a complete summary of this support ticket:
+      
+      {{routing}}
+      
+      Include:
+      - One-line summary
+      - Key details
+      - Action items
+      - Suggested response preview
+      - Any special handling notes
+      
+      This summary will be visible to the customer and internal team.
+    variables:
+      - routing
+
+edges:
+  - id: e1
+    source: sentiment
+    target: categorization
+  - id: e2
+    source: sentiment
+    target: intent
+  - id: e3
+    source: categorization
+    target: suggested-response
+  - id: e4
+    source: intent
+    target: suggested-response
+  - id: e5
+    source: categorization
+    target: routing
+  - id: e6
+    source: intent
+    target: routing
+  - id: e7
+    source: routing
+    target: summary
+  - id: e8
+    source: suggested-response
+    target: summary
+
+metadata:
+  createdAt: "2024-03-27"
+  author: PromptFlow Team
+  tags:
+    - customer-support
+    - classification
+    - multi-node
+    - automation
+    - advanced
