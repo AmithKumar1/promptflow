@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="50%" style="stop-color:#16213e"/>
+      <stop offset="100%" style="stop-color:#0f3460"/>
+    </linearGradient>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d9ff"/>
+      <stop offset="100%" style="stop-color:#00ff88"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="400" fill="url(#bgGradient)"/>
+  
+  <!-- Grid pattern -->
+  <g opacity="0.1">
+    <defs>
+      <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#fff" stroke-width="1"/>
+      </pattern>
+    </defs>
+    <rect width="1200" height="400" fill="url(#grid)"/>
+  </g>
+  
+  <!-- Decorative nodes -->
+  <g filter="url(#glow)">
+    <circle cx="150" cy="100" r="30" fill="url(#logoGradient)" opacity="0.3"/>
+    <circle cx="1050" cy="300" r="40" fill="url(#logoGradient)" opacity="0.3"/>
+    <circle cx="200" cy="350" r="20" fill="url(#logoGradient)" opacity="0.2"/>
+    <circle cx="1000" cy="80" r="25" fill="url(#logoGradient)" opacity="0.2"/>
+  </g>
+  
+  <!-- Connection lines -->
+  <g stroke="url(#logoGradient)" stroke-width="2" opacity="0.4" fill="none">
+    <path d="M 150 100 L 300 180 L 450 150"/>
+    <path d="M 750 200 L 900 250 L 1050 300"/>
+  </g>
+  
+  <!-- Logo icon -->
+  <g transform="translate(100, 120)" filter="url(#glow)">
+    <rect x="0" y="0" width="60" height="60" rx="12" fill="url(#logoGradient)"/>
+    <path d="M 20 30 L 30 40 L 45 20" stroke="#1a1a2e" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  
+  <!-- Main title -->
+  <text x="200" y="150" font-family="'Segoe UI', Arial, sans-serif" font-size="64" font-weight="bold" fill="#ffffff" letter-spacing="2">
+    Prompt
+    <tspan fill="url(#logoGradient)">Flow</tspan>
+  </text>
+  
+  <!-- Tagline -->
+  <text x="200" y="200" font-family="'Segoe UI', Arial, sans-serif" font-size="24" fill="#a0a0a0" letter-spacing="1">
+    Visual Prompt Engineering &amp; Workflow Orchestrator
+  </text>
+  
+  <!-- Feature badges -->
+  <g transform="translate(200, 250)">
+    <rect x="0" y="0" width="140" height="36" rx="18" fill="#00d9ff" opacity="0.15"/>
+    <text x="70" y="23" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#00d9ff" text-anchor="middle" font-weight="600">
+      ⚡ Multi-Provider
+    </text>
+    
+    <rect x="155" y="0" width="120" height="36" rx="18" fill="#00ff88" opacity="0.15"/>
+    <text x="215" y="23" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#00ff88" text-anchor="middle" font-weight="600">
+      🎨 Visual Editor
+    </text>
+    
+    <rect x="290" y="0" width="110" height="36" rx="18" fill="#ff6b6b" opacity="0.15"/>
+    <text x="345" y="23" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#ff6b6b" text-anchor="middle" font-weight="600">
+      💾 Caching
+    </text>
+    
+    <rect x="415" y="0" width="90" height="36" rx="18" fill="#ffd93d" opacity="0.15"/>
+    <text x="460" y="23" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#ffd93d" text-anchor="middle" font-weight="600">
+      ✅ Tests
+    </text>
+  </g>
+  
+  <!-- Code snippet decoration -->
+  <g transform="translate(700, 250)" opacity="0.8">
+    <rect x="0" y="0" width="400" height="120" rx="8" fill="#0d1117" stroke="#30363d" stroke-width="1"/>
+    <text x="20" y="30" font-family="'Consolas', 'Courier New', monospace" font-size="12" fill="#58a6ff">pf</text>
+    <text x="50" y="30" font-family="'Consolas', 'Courier New', monospace" font-size="12" fill="#ff7b72">run</text>
+    <text x="90" y="30" font-family="'Consolas', 'Courier New', monospace" font-size="12" fill="#a5d6ff">workflows/example.yaml</text>
+    
+    <text x="20" y="60" font-family="'Consolas', 'Courier New', monospace" font-size="11" fill="#8b949e"># Execute workflow with variables</text>
+    
+    <text x="20" y="85" font-family="'Consolas', 'Courier New', monospace" font-size="12" fill="#58a6ff">pf</text>
+    <text x="50" y="85" font-family="'Consolas', 'Courier New', monospace" font-size="12" fill="#ff7b72">run</text>
+    <text x="90" y="85" font-family="'Consolas', 'Courier New', monospace" font-size="12" fill="#a5d6ff">workflow.yaml</text>
+    <text x="210" y="85" font-family="'Consolas', 'Courier New', monospace" font-size="12" fill="#ff7b72">-v</text>
+    <text x="235" y="85" font-family="'Consolas', 'Courier New', monospace" font-size="12" fill="#7ee787">topic="AI"</text>
+    
+    <text x="20" y="110" font-family="'Consolas', 'Courier New', monospace" font-size="11" fill="#8b949e">✓ Workflow completed in 2.3s</text>
+  </g>
+</svg>

@@ -2,12 +2,14 @@
 
 <div align="center">
 
+![PromptFlow Banner](assets/banner.svg)
+
 **Visual prompt engineering and workflow orchestrator for LLMs**
 
-[![CI](https://img.shields.io/github/actions/workflow/status/promptflow/promptflow/ci.yaml?branch=main)](https://github.com/promptflow/promptflow/actions)
-[![npm](https://img.shields.io/npm/v/@promptflow/core)](https://www.npmjs.com/package/@promptflow/core)
+[![CI](https://img.shields.io/github/actions/workflow/status/AmithKumar1/promptflow/ci.yaml?branch=master)](https://github.com/AmithKumar1/promptflow/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.4-blue)](https://www.typescriptlang.org)
+[![GitHub stars](https://img.shields.io/github/stars/AmithKumar1/promptflow?style=social)](https://github.com/AmithKumar1/promptflow)
 
 [Features](#features) • [Quick Start](#quick-start) • [Documentation](#documentation) • [Examples](#examples) • [Contributing](#contributing)
 
@@ -15,9 +17,13 @@
 
 ---
 
-PromptFlow is a powerful tool for building, visualizing, and executing complex LLM workflows. Chain multiple prompts together, add conditional logic, cache results, and orchestrate multi-step AI tasks with ease.
+<div align="center">
 
-## ✨ Features
+![Architecture](assets/architecture.svg)
+
+</div>
+
+PromptFlow is a powerful tool for building, visualizing, and executing complex LLM workflows. Chain multiple prompts together, add conditional logic, cache results, and orchestrate multi-step AI tasks with ease.
 
 - **🔗 Workflow Orchestration** - Chain multiple LLM calls together with defined execution order
 - **🎨 Visual Editor** - Node-based UI for designing workflows visually (React Flow)
@@ -29,6 +35,12 @@ PromptFlow is a powerful tool for building, visualizing, and executing complex L
 - **📦 CLI Tools** - Command-line interface for running and managing workflows
 - **🧪 Testing Support** - Built-in testing utilities for workflow testing
 - **📊 Export Options** - Export workflows to JSON, YAML, Mermaid diagrams, or TypeScript code
+
+<div align="center">
+
+![Features](assets/features.svg)
+
+</div>
 
 ## 🚀 Quick Start
 
@@ -168,6 +180,12 @@ Open http://localhost:3000 to:
 - Run workflows directly from the UI
 
 ## 📚 Examples
+
+<div align="center">
+
+![Workflow Diagram](assets/workflow-diagram.svg)
+
+</div>
 
 PromptFlow includes several example workflows in the `examples/` directory:
 

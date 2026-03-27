@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="socialBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="50%" style="stop-color:#1e293b"/>
+      <stop offset="100%" style="stop-color:#334155"/>
+    </linearGradient>
+    <linearGradient id="socialLogo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d9ff"/>
+      <stop offset="50%" style="stop-color:#00ff88"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+    <filter id="socialGlow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#socialBg)"/>
+  
+  <!-- Decorative elements -->
+  <g opacity="0.1">
+    <circle cx="100" cy="100" r="200" fill="url(#socialLogo)"/>
+    <circle cx="1100" cy="530" r="300" fill="url(#socialLogo)"/>
+    <circle cx="600" cy="315" r="400" fill="url(#socialLogo)" opacity="0.05"/>
+  </g>
+  
+  <!-- Grid pattern -->
+  <g opacity="0.05">
+    <defs>
+      <pattern id="socialGrid" width="50" height="50" patternUnits="userSpaceOnUse">
+        <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#fff" stroke-width="1"/>
+      </pattern>
+    </defs>
+    <rect width="1200" height="630" fill="url(#socialGrid)"/>
+  </g>
+  
+  <!-- Logo -->
+  <g transform="translate(100, 180)" filter="url(#socialGlow)">
+    <rect x="0" y="0" width="120" height="120" rx="24" fill="url(#socialLogo)"/>
+    <path d="M 40 60 L 60 80 L 90 40" stroke="#0f172a" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  
+  <!-- Main title -->
+  <text x="260" y="240" font-family="'Segoe UI', Arial, sans-serif" font-size="72" font-weight="bold" fill="#ffffff" letter-spacing="3">
+    Prompt
+    <tspan fill="url(#socialLogo)">Flow</tspan>
+  </text>
+  
+  <!-- Tagline -->
+  <text x="260" y="300" font-family="'Segoe UI', Arial, sans-serif" font-size="32" fill="#94a3b8" letter-spacing="1">
+    Visual Prompt Engineering &amp; Workflow Orchestrator
+  </text>
+  
+  <!-- Feature pills -->
+  <g transform="translate(260, 360)">
+    <rect x="0" y="0" width="160" height="44" rx="22" fill="#00d9ff" opacity="0.15"/>
+    <text x="80" y="28" font-family="'Segoe UI', Arial, sans-serif" font-size="16" fill="#00d9ff" text-anchor="middle" font-weight="600">
+      ⚡ Multi-Provider
+    </text>
+    
+    <rect x="175" y="0" width="150" height="44" rx="22" fill="#00ff88" opacity="0.15"/>
+    <text x="250" y="28" font-family="'Segoe UI', Arial, sans-serif" font-size="16" fill="#00ff88" text-anchor="middle" font-weight="600">
+      🎨 Visual Editor
+    </text>
+    
+    <rect x="340" y="0" width="130" height="44" rx="22" fill="#f472b6" opacity="0.15"/>
+    <text x="405" y="28" font-family="'Segoe UI', Arial, sans-serif" font-size="16" fill="#f472b6" text-anchor="middle" font-weight="600">
+      💾 Caching
+    </text>
+    
+    <rect x="485" y="0" width="140" height="44" rx="22" fill="#fbbf24" opacity="0.15"/>
+    <text x="555" y="28" font-family="'Segoe UI', Arial, sans-serif" font-size="16" fill="#fbbf24" text-anchor="middle" font-weight="600">
+      ✅ Tests
+    </text>
+  </g>
+  
+  <!-- Code snippet -->
+  <g transform="translate(100, 450)">
+    <rect x="0" y="0" width="1000" height="140" rx="16" fill="#0d1117" stroke="#30363d" stroke-width="2"/>
+    <rect x="0" y="0" width="1000" height="30" rx="16" fill="#161b22"/>
+    <rect x="10" y="8" width="12" height="12" rx="6" fill="#ff5f56"/>
+    <rect x="30" y="8" width="12" height="12" rx="6" fill="#ffbd2e"/>
+    <rect x="50" y="8" width="12" height="12" rx="6" fill="#27c93f"/>
+    
+    <text x="30" y="65" font-family="'Consolas', 'Courier New', monospace" font-size="16" fill="#58a6ff">pnpm</text>
+    <text x="90" y="65" font-family="'Consolas', 'Courier New', monospace" font-size="16" fill="#ff7b72">add</text>
+    <text x="140" y="65" font-family="'Consolas', 'Courier New', monospace" font-size="16" fill="#a5d6ff">@promptflow/core</text>
+    
+    <text x="30" y="100" font-family="'Consolas', 'Courier New', monospace" font-size="16" fill="#58a6ff">pf</text>
+    <text x="60" y="100" font-family="'Consolas', 'Courier New', monospace" font-size="16" fill="#ff7b72">run</text>
+    <text x="110" y="100" font-family="'Consolas', 'Courier New', monospace" font-size="16" fill="#a5d6ff">workflows/my-workflow.yaml</text>
+    
+    <text x="30" y="135" font-family="'Consolas', 'Courier New', monospace" font-size="14" fill="#8b949e"># ✓ Execute multi-step LLM workflows with caching &amp; retry</text>
+  </g>
+  
+  <!-- GitHub badge -->
+  <g transform="translate(950, 100)">
+    <rect x="0" y="0" width="180" height="40" rx="20" fill="#ffffff" opacity="0.1"/>
+    <text x="90" y="26" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#ffffff" text-anchor="middle" font-weight="600">
+      ⭐ Star on GitHub
+    </text>
+  </g>
+  
+  <!-- URL at bottom -->
+  <text x="600" y="610" font-family="'Consolas', monospace" font-size="14" fill="#475569" text-anchor="middle">
+    github.com/AmithKumar1/promptflow
+  </text>
+</svg>
