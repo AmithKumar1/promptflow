@@ -239,6 +239,13 @@ pnpm build
 pnpm lint
 ```
 
+## 📖 Documentation
+
+- **[📘 Full Documentation](docs/README.md)** - Complete guide with concepts, syntax, and examples
+- **[🚀 Quick Start](docs/QUICKSTART.md)** - Get started in 5 minutes
+- **[📊 Comparison Guide](docs/COMPARISON.md)** - See how PromptFlow transforms development
+- **[💡 Examples](examples/)** - Ready-to-use workflow templates
+
 ## 🤝 Contributing
 
 We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for details.
@@ -264,8 +271,8 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## 📬 Contact
 
-- GitHub Issues: [Report issues](https://github.com/promptflow/promptflow/issues)
-- Discussions: [GitHub Discussions](https://github.com/promptflow/promptflow/discussions)
+- GitHub Issues: [Report issues](https://github.com/AmithKumar1/promptflow/issues)
+- Discussions: [GitHub Discussions](https://github.com/AmithKumar1/promptflow/discussions)
 
 ---
 
